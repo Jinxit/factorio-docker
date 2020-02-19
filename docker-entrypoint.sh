@@ -13,10 +13,8 @@ handler()
     exit
 }
 
-curl http://169.254.170.2/v2/metadata
-
 echo "Updating DNS route."
-PUBLIC_IP=$(curl -s http://169.254.170.2/v2/metadata | jq -r .Containers[0].Networks[0].IPv4Addresses[0])
+PUBLIC_IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$SERVER_NAME"'.factorio.doush.io","ResourceRecords":[{"Value":"'"$PUBLIC_IP"'"}],"TTL":60,"Type":"A"}}]}'
 
 if [ ! -z "$S3_BUCKET" ]
