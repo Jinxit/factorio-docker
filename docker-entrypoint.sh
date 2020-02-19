@@ -1,7 +1,9 @@
 #!/bin/bash
+set -x
 
-interrupt()
+handler()
 {
+    echo "Interrupted!"
     ./factorio stop
     if [ ! -z "$S3_BUCKET" ]
     then
@@ -22,9 +24,12 @@ then
         exit
     fi
 fi
+
+trap handler SIGINT
+trap handler SIGTERM
+
 ./factorio start
 
-trap interrupt SIGINT
-trap interrupt SIGTERM
+tail -f /opt/factorio/server.out -n10000 &
 
-tail -f /opt/factorio/server.out -n10000
+wait
