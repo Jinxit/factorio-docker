@@ -23,5 +23,6 @@ fi
 ./factorio start
 
 trap interrupt SIGINT
+trap interrupt SIGTERM
 
 tail -f /opt/factorio/server.out -n10000
