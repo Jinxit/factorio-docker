@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -xe
 
 handler()
 {
@@ -14,7 +14,7 @@ handler()
 }
 
 echo "Updating DNS route."
-PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+PUBLIC_IP=$(curl -s http://169.254.170.2/v2/metadata | jq -r .Containers[0].Networks[0].IPv4Addresses[0])
 aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$SERVER_NAME"'.factorio.doush.io","ResourceRecords":[{"Value":"'"$PUBLIC_IP"'"}],"TTL":60,"Type":"A"}}]}'
 
 if [ ! -z "$S3_BUCKET" ]
