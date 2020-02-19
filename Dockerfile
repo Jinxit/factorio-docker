@@ -5,7 +5,7 @@ LABEL version=$FACTORIO_VERSION
 ENV LATEST_HEADLESS_URL=https://factorio.com/get-download/$FACTORIO_VERSION/headless/linux64
 
 # factorio packages
-RUN apk add --update --no-cache git curl wget bash
+RUN apk add --update --no-cache git curl wget bash jq
 
 # aws-cli packages
 RUN apk add --no-cache --update \
