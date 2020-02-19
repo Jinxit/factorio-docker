@@ -36,4 +36,4 @@ RUN ./factorio install
 COPY --chown=factorio:factorio ./server-settings.json /opt/factorio/data/
 COPY --chown=factorio:factorio ./docker-entrypoint.sh /opt/factorio-init/
 
-CMD ./docker-entrypoint.sh
+CMD ["/opt/factorio-init/docker-entrypoint.sh"]
