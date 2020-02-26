@@ -8,7 +8,7 @@ handler()
     if [ ! -z "$S3_BUCKET" ]
     then
         echo "Uploading saves to S3."
-        aws s3 sync --storage-class STANDARD_IA /opt/factorio/saves/ s3://$S3_BUCKET/$SERVER_NAME/saves
+        aws s3 sync --storage-class STANDARD_IA /opt/factorio/saves/ s3://$S3_BUCKET/saves
     fi
     exit
 }
@@ -20,7 +20,7 @@ aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE --change-b
 if [ ! -z "$S3_BUCKET" ]
 then
     echo "Downloading saves from S3 bucket $S3_BUCKET."
-    aws s3 sync s3://$S3_BUCKET/$SERVER_NAME/saves /opt/factorio/saves/
+    aws s3 sync s3://$S3_BUCKET/saves /opt/factorio/saves/
     if [ ! $? -eq 0 ]
     then
         exit
