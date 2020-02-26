@@ -1,9 +1,5 @@
 FROM alpine:3
 
-ARG FACTORIO_VERSION
-LABEL version=$FACTORIO_VERSION
-ENV LATEST_HEADLESS_URL=https://factorio.com/get-download/$FACTORIO_VERSION/headless/linux64
-
 # factorio packages
 RUN apk add --update --no-cache git curl wget bash jq bind-tools
 
@@ -42,9 +38,12 @@ RUN adduser factorio --disabled-password --no-create-home && \
 USER factorio
 RUN git clone https://github.com/Jinxit/factorio-init /opt/factorio-init
 WORKDIR /opt/factorio-init
+ARG FACTORIO_VERSION
+LABEL version=$FACTORIO_VERSION
+ENV LATEST_HEADLESS_URL=https://factorio.com/get-download/$FACTORIO_VERSION/headless/linux64
 RUN ./factorio install
 
-COPY --chown=factorio:factorio ./server-settings.json /opt/factorio/data/
 COPY --chown=factorio:factorio ./docker-entrypoint.sh /opt/factorio-init/
+COPY --chown=factorio:factorio ./server-settings.json /opt/factorio/data/
 
 ENTRYPOINT ["/opt/factorio-init/docker-entrypoint.sh"]
