@@ -17,7 +17,7 @@ if [ ! -z "$HOSTED_ZONE" ]
 then
     echo "Updating DNS route."
     PUBLIC_IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
-    aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$SERVER_NAME"'.factorio.doush.io","ResourceRecords":[{"Value":"'"$PUBLIC_IP"'"}],"TTL":60,"Type":"A"}}]}'
+    aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$SERVER_NAME"'.'"$DOMAIN"'","ResourceRecords":[{"Value":"'"$PUBLIC_IP"'"}],"TTL":60,"Type":"A"}}]}'
 fi
 
 if [ ! -z "$S3_BUCKET" ]
