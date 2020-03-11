@@ -18,6 +18,7 @@ then
     RCON_PASS=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME | jq -r '.SecretString')
     EXTRA_BINARGS="$EXTRA_BINARGS --rcon-bind 0.0.0.0:27015 --rcon-password $RCON_PASS"
 fi
+export EXTRA_BINARGS
 
 if [ ! -z "$HOSTED_ZONE" ]
 then
@@ -45,7 +46,7 @@ fi
 trap handler SIGINT
 trap handler SIGTERM
 
-./factorio start $RCON
+./factorio start
 
 tail -f /opt/factorio/server.out -n10000 &
 
