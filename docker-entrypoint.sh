@@ -13,11 +13,10 @@ handler()
     exit
 }
 
-RCON=""
 if [ ! -z "$SECRET_NAME" ]
 then
     RCON_PASS=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME | jq -r '.SecretString')
-    RCON="--rcon-bind 0.0.0.0:27015 --rcon-password $RCON_PASS"
+    EXTRA_BINARGS="$EXTRA_BINARGS --rcon-bind 0.0.0.0:27015 --rcon-password $RCON_PASS"
 fi
 
 if [ ! -z "$HOSTED_ZONE" ]
